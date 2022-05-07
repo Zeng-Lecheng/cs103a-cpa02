@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 let userSchema = Schema({
     uid: String,
     inventory: Object,
-    last_update: Number
-})
+}, { minimize: false })
 
 module.exports = mongoose.model('User', userSchema)

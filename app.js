@@ -67,10 +67,10 @@ app.get('/sync', (req, res) => {
     }
 })
 
-app.get('/signup', (req, res) => {
+app.get('/signup', async (req, res) => {
     let uid = uuidv4()
     console.log(`${uid} inserted.`)
-    User.insertMany({ uid: uid, inventory: {}, last_update: Date.now() })
+    User.insertMany({ uid: uid, inventory: {} })
     res.cookie('uid', uid)
     res.render('sync', { uid: uid })
 })
