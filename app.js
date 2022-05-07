@@ -118,7 +118,7 @@ app.use(function (err, req, res, next) {
     res.render("error")
 })
 
-const port = "5000"
+const port = process.env.PORT
 app.set("port", port)
 const server = http.createServer(app)
 
