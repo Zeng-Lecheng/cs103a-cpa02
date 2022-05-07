@@ -1,9 +1,15 @@
-<% if (typeof(uid) !== 'undefined' && uid != null && uid !== 'j:null') {%>
-    <p>Your current UID: <%= uid %> </p>
-<% } %>
-<form action="/login" method="post">
-    <label for="uid"><%= typeof(uid) !== 'undefined' && uid != null && uid !== 'j:null' ? 'Login a new UID: ' : 'Enter Your UID: ' %> </label>
-    <input type="text" id="uid" name="uid">
-    <input type="submit" value="Submit">
-</form>
-<p>Don't have an UID? <a href="/signup">Generate a new one.</a></p>
+<% if (typeof(uid) !=='undefined' && uid !=null && uid !=='j:null' ) {%>
+    <p>Your current UID: <%= uid %>
+    </p>
+    <% } %>
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="uid">
+                    <%= typeof(uid) !=='undefined' && uid !=null && uid !=='j:null' ? 'Login a new UID: '
+                        : 'Enter Your UID: ' %>
+                </label>
+                <input class="form-control-plaintext border" type="text" id="uid" name="uid">
+                <input class="btn btn-success" type="submit" value="Submit">
+            </div>
+        </form>
+        <p>Don't have an UID? <a href="/signup">Generate a new one.</a></p>

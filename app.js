@@ -55,6 +55,10 @@ app.get('/', async (req, res) => {
     }
 })
 
+app.get('/about', (req, res) => {
+    res.render('about')
+})
+
 app.get('/sync', (req, res) => {
     if (req.cookies !== null && req.cookies.uid != null) {
         res.render('sync', { uid: req.cookies.uid })

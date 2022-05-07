@@ -1,11 +1,8 @@
 <div>
-    <% if (uid !== 'j:null') {%>
-        <p>Your current UID: <%= uid %> </p>
-    <% } %>
 <% if (Object.keys(data.inventory).length === 0) { %>
     <p>You don't have anything.</p>
 <% } else { %>
-    <table>
+    <table class="table table-bordered table-condensed">
         <tr>
             <th>Name</th>
             <th>Content</th>
@@ -19,10 +16,8 @@
                     <%= data.inventory[item] %>
                 </td>
                 <td>
-                    <a href="/editor/<%=item%>/<%=data.inventory[item]%>">Edit</a>
-                </td>
-                <td>
-                    <a href="/delete/<%=item%>%>">Delete</a>
+                    <a class="btn btn-primary" href="/editor/<%=item%>/<%=data.inventory[item]%>">Edit</a>
+                    <a class="btn btn-danger" href="/delete/<%=item%>">Delete</a>
                 </td>
             </tr>
             <%}%>
@@ -30,5 +25,8 @@
 <% } %>
 </div>
 <div>
-    <a href="/editor/%20/%20">Create new entry</a>
+    <a class="btn btn-primary" href="/editor/%20/%20">Create new entry</a>
+    <% if (uid !== 'j:null') {%>
+        <p class="fw-light">Your current UID: <%= uid %> </p>
+    <% } %>
 </div>
