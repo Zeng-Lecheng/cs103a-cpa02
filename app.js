@@ -23,6 +23,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
 mongoose.connect(mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -40,11 +41,14 @@ store.on('error', function (error) {
 });
 
 
-app.get('/', (req, res) => {
-    if (req.cookies != null && req.cookies.uid != null) {
-        let data = User.findOne({ uid: req.cookies.uid })
-        console.log(data)
-        res.render('index', { data: data })
+app.get('/', async (req, res) => {
+    if (req.cookies != null && req.cookies.uid != 'j:null') {
+        res.locals.data = await User.findOne({ uid: req.cookies.uid })
+        if (res.locals.data === 'undefined') {
+            res.redirect('/sync')
+        } else {
+            res.render('index', { uid: req.cookies.uid })
+        }
     } else {
         res.cookie('uid', null)
         res.redirect('/sync')
@@ -53,18 +57,48 @@ app.get('/', (req, res) => {
 
 app.get('/sync', (req, res) => {
     if (req.cookies !== null && req.cookies.uid != null) {
-        res.render('sync', {uid: req.cookies.uid})
+        res.render('sync', { uid: req.cookies.uid })
     } else {
-        res.render('sync', {uid: null})
+        res.render('sync', { uid: null })
     }
 })
 
 app.get('/signup', (req, res) => {
     let uid = uuidv4()
     console.log(`${uid} inserted.`)
-    User.insertMany({uid: uid, inventory: {}, last_update: Date.now()})
+    User.insertMany({ uid: uid, inventory: {}, last_update: Date.now() })
     res.cookie('uid', uid)
-    res.render('sync', {uid: uid})
+    res.render('sync', { uid: uid })
+})
+
+app.post('/login', async (req, res) => {
+    let data = await User.findOne({ uid: req.body.uid })
+    if (data !== null) {
+        res.cookie('uid', req.body.uid)
+        res.locals.data = data;
+        res.render('index', { uid: req.cookies.uid })
+    } else {
+        res.cookie('uid', null)
+        res.render('sync', { uid: null })
+    }
+})
+
+app.get('/editor/:name/:content', (req, res) => {
+    res.render('editor', { name: req.params.name, content: req.params.content })
+})
+
+app.post('/edit', async (req, res) => {
+    let data = await User.findOne({ uid: req.cookies.uid })
+    data.inventory[req.body.name] = req.body.content
+    res.locals.data = await User.findOneAndUpdate({ uid: req.cookies.uid }, { inventory: data.inventory })
+    res.redirect('/')
+})
+
+app.get('/delete/:name', async (req, res) => {
+    let data = await User.findOne({ uid: req.cookies.uid })
+    delete data.inventory[req.params.name]
+    res.locals.data = await User.findOneAndUpdate({ uid: req.cookies.uid }, { inventory: data.inventory })
+    res.redirect('/')
 })
 
 app.use(function (req, res, next) {
