@@ -1,8 +1,8 @@
-<% if (uid !== 'j:null') {%>
+<% if (typeof(uid) !== 'undefined' && uid != null && uid !== 'j:null') {%>
     <p>Your current UID: <%= uid %> </p>
 <% } %>
 <form action="/login" method="post">
-    <label for="uid"><%= uid !== null ? 'New UID: ' : 'Enter Your UID: ' %> </label>
+    <label for="uid"><%= typeof(uid) !== 'undefined' && uid != null && uid !== 'j:null' ? 'Login a new UID: ' : 'Enter Your UID: ' %> </label>
     <input type="text" id="uid" name="uid">
     <input type="submit" value="Submit">
 </form>

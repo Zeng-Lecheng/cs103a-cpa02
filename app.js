@@ -42,7 +42,7 @@ store.on('error', function (error) {
 
 
 app.get('/', async (req, res) => {
-    if (req.cookies != null && req.cookies.uid != 'j:null') {
+    if (req.cookies != null && typeof(req.cookies.uid) !== 'undefined' && req.cookies.uid != 'j:null') {
         res.locals.data = await User.findOne({ uid: req.cookies.uid })
         if (res.locals.data === 'undefined') {
             res.redirect('/sync')
@@ -76,7 +76,7 @@ app.post('/login', async (req, res) => {
     if (data !== null) {
         res.cookie('uid', req.body.uid)
         res.locals.data = data;
-        res.render('index', { uid: req.cookies.uid })
+        res.redirect('/')
     } else {
         res.cookie('uid', null)
         res.render('sync', { uid: null })
