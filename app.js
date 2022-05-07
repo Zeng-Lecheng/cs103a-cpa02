@@ -11,7 +11,7 @@ const { v4: uuidv4 } = require('uuid')
 var MongoDBStore = require('connect-mongodb-session')(session);
 
 const mongoose = require('mongoose')
-const mongodb_URI = 'mongodb+srv://admin:tiger%26zlc%2697@cluster0.k0m67.mongodb.net/test?authSource=admin&replicaSet=atlas-k94gtp-shard-0&readPreference=primary&ssl=true'
+const mongodb_URI = process.env.MONGODB_ADDRESS
 
 const User = require('./User')
 
