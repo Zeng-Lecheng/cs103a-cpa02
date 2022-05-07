@@ -1,0 +1,9 @@
+<% if (uid !== null) {%>
+    <p>Your current UID: <%= uid %> </p>
+<% } %>
+<form action="/login" method="post">
+    <label for="uid"><%= uid !== null ? 'New UID: ' : 'Enter Your UID: ' %> </label>
+    <input type="text" id="uid">
+    <input type="submit" value="Submit">
+</form>
+<p>Don't have an UID? <a href="/signup">Generate a new one.</a></p>
